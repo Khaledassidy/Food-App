@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Activity.CartActivity">
+
+
+
+    <TextView
+        android:id="@+id/cart_empty_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/red"
+        android:text="Cart is Empty" />
+<!--    Using NestedScrollView with setNestedScrollingEnabled(true) for a RecyclerView inside a scrolling container is a good idea in this scenario for several reasons:
+1. Solves the Double Scrolling Issue:
+The primary reason is that it directly addresses the double scrolling problem you were facing. When you nest a regular RecyclerView within a ScrollView, both try to handle scrolling independently, leading to conflicts and a jarring user experience. NestedScrollView is designed to coordinate scrolling between the parent and child, eliminating this issue.
+2. Improved Performance:
+NestedScrollView is optimized for handling nested scrolling scenarios, often resulting in better performance compared to using a regular ScrollView. It efficiently manages touch events and scrolling behavior, minimizing potential lag or stuttering.
+3. Simplicity and Ease of Use:
+This approach is significantly simpler than other solutions like calculating item heights dynamically or creating custom layout managers. It involves just replacing the ScrollView with NestedScrollView in your XML and enabling nested scrolling in the RecyclerView with a single line of code.
+4. Standard Android Practice:
+Using NestedScrollView with nested scrolling children like RecyclerView is a recommended practice in Android development for handling such layouts. It's a well-supported and widely used pattern.
+5. Flexibility:
+NestedScrollView provides flexibility for handling various nested scrolling scenarios, not just with RecyclerView. You can use it with other scrollable views like ListView or even custom views that implement nested scrolling behavior.
+In summary, using NestedScrollView in this way offers a simple, efficient, and standard solution to the double scrolling issue, improving both user experience and performance. It's the preferred approach for handling RecyclerView within a scrolling container in most cases.-->
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:fastScrollEnabled="true">
+
+        <LinearLayout
+            android:id="@+id/edittext_copon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+              <ImageView
+                android:id="@+id/back_btn_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/arrow"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="4dp"/>
+
+              <TextView
+                  android:id="@+id/cart_text"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:gravity="center"
+                  android:text="Cart"
+                  android:textColor="@color/blue_grey"
+                  android:textSize="24sp"
+                  android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rercyle_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:fastScrollEnabled="true"
+                android:nestedScrollingEnabled="true"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTextText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/grey_background"
+                    android:ems="10"
+                    android:hint="Enter Your Code"
+                    android:inputType="text"
+                    android:textAlignment="center"
+                    android:textColor="@color/blue_grey"
+                    android:textColorHint="@color/blue_grey"
+                    android:textSize="14sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_copon"
+                    style="@android:style/Widget.Button"
+                    android:layout_width="145dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/orange_back_button2"
+                    android:text="Apply Coupon"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Order Summary"
+                android:textColor="@color/blue_grey"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                style="@style/textstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/grey_background">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    style="@style/textstyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Subtotal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    style="@style/textstyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Delivery"
+                    app:layout_constraintStart_toStartOf="@+id/textView3"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/textstyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Total Tax"
+                    app:layout_constraintStart_toStartOf="@+id/textView4"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+                <TextView
+                    android:id="@+id/subtotal_text"
+                    style="@style/textstyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="$-"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+                <TextView
+                    android:id="@+id/delivery_value"
+                    style="@style/textstyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="$-"
+                    app:layout_constraintEnd_toEndOf="@+id/subtotal_text"
+                    app:layout_constraintTop_toBottomOf="@+id/subtotal_text" />
+
+                <TextView
+                    android:id="@+id/totla_tax_vlaue"
+                    style="@style/textstyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="$-"
+                    app:layout_constraintEnd_toEndOf="@+id/delivery_value"
+                    app:layout_constraintTop_toBottomOf="@+id/delivery_value" />
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="#ABABAB"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    style="@style/textstyle_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Total"
+                    app:layout_constraintStart_toStartOf="@+id/textView5"
+                    app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+                <TextView
+                    android:id="@+id/totla_cart"
+                    style="@style/textstyle_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="$-"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView9" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/place_order"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/orange_button"
+                android:text="Place Order"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

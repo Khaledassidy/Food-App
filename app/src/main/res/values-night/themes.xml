@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.FoodAPP" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropdownItem</item>
+    </style>
+
+    <style name="SpinnerDropdownItem" parent="Widget.AppCompat.TextView.SpinnerItem">
+        <item name="android:textColor">@color/blue_grey</item>
+    </style>
+
+</resources>
