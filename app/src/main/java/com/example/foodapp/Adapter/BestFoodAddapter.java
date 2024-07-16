@@ -69,7 +69,7 @@ public class BestFoodAddapter extends RecyclerView.Adapter<BestFoodAddapter.view
         holder.plus_button.setOnClickListener(v-> {
             Foods foods = items.get(position);
             if (foods != null) { // Ensure the object is valid and quantity is greater than zero
-                boolean flag=Cart.getInstance().additem(context,foods);
+                boolean flag=Cart.getInstance().additem1(context,foods);
                 MainActivity.notification();
                 Snackbar snackbar1 = Snackbar.make(holder.itemView, "Your item added to Cart", Snackbar.LENGTH_SHORT);
                 snackbar1.setTextColor(context.getResources().getColor(R.color.orange));

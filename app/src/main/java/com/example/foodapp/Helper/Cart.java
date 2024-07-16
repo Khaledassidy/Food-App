@@ -1,6 +1,7 @@
 package com.example.foodapp.Helper;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,6 +17,8 @@ public class Cart {
     private static Cart instance;
     private static  ArrayList<Foods> arrayList;
     private static final double DELEVIRY_FEES=5.00;
+    private int lastRemovedItemQuantity;
+    private Foods lastRemovedItem;
     public  Cart(){
         arrayList=new ArrayList<>();
     }
@@ -34,7 +37,31 @@ public class Cart {
         if(foods!=null){
             for (Foods existingitem:arrayList){
                 if(existingitem.getId()==foods.getId()){
-                    int newQuantity = existingitem.getNumberInCart() + 1;
+                    int newQuantity = DetailActivity.num;
+                    existingitem.setNumberInCart(newQuantity);
+                    Bundle bundle=new Bundle();
+                    itemexist = true;
+                    toast(context,newQuantity);
+                    break;
+                }
+            }
+            if(!itemexist){
+                foods.setNumberInCart(foods.getNumberInCart());
+                arrayList.add(foods);
+
+            }
+
+        }
+        return itemexist;
+
+
+    }
+    public  boolean  additem1(Context context,Foods foods){
+        boolean itemexist=false;
+        if(foods!=null){
+            for (Foods existingitem:arrayList){
+                if(existingitem.getId()==foods.getId()){
+                    int newQuantity = existingitem.getNumberInCart()+1;
                     existingitem.setNumberInCart(newQuantity);
                     itemexist = true;
                     toast(context,newQuantity);
@@ -42,7 +69,7 @@ public class Cart {
                 }
             }
             if(!itemexist){
-                foods.setNumberInCart(1);
+                foods.setNumberInCart(foods.getNumberInCart());
                 arrayList.add(foods);
 
             }
@@ -53,16 +80,20 @@ public class Cart {
 
     }
 
-    public void deleteitem(Context context,Foods foods){
+    public boolean deleteitem(Context context,Foods foods){
+        boolean itemdelete=false;
         if (foods != null) {
             for (Foods existingItem : arrayList) {
                 if (existingItem.getId() == foods.getId()) {
                     int newQuantity = existingItem.getNumberInCart() - 1;
                     existingItem.setNumberInCart(newQuantity);
-                    if (newQuantity == 0) {
-                        arrayList.remove(existingItem);
+                    if (foods.getNumberInCart() == 0) {
+                        lastRemovedItem=existingItem;
+                        lastRemovedItemQuantity=existingItem.getNumberInCart();
+                        arrayList.remove(foods);
+                        itemdelete=true;
+                        foods.setNumberInCart(1);
                     }
-                    toast(context, newQuantity);
                     break;
                 }
             }
@@ -70,8 +101,42 @@ public class Cart {
 
 
         }
+        return itemdelete;
 
     }
+    public boolean deleteitem1(Context context,Foods foods){
+        boolean itemdelete=false;
+        if (foods != null) {
+            for (Foods existingItem : arrayList) {
+                if (existingItem.getId() == foods.getId()) {
+                    int newQuantity = existingItem.getNumberInCart();
+                    existingItem.setNumberInCart(newQuantity);
+                    lastRemovedItem=existingItem;
+                    lastRemovedItemQuantity=existingItem.getNumberInCart();
+                      arrayList.remove(existingItem);
+                        itemdelete=true;
+                    }
+                    break;
+                }
+            }
+        return itemdelete;
+
+
+
+
+
+    }
+    public void restoreLastRemovedItem() {
+        if (lastRemovedItem != null) {
+            lastRemovedItem.setNumberInCart(lastRemovedItemQuantity);
+            arrayList.add(lastRemovedItem);
+            lastRemovedItem = null;
+        }
+    }
+
+
+
+
 
     public  void toast(Context context,int quntity){
        Toast toast=new Toast(context);

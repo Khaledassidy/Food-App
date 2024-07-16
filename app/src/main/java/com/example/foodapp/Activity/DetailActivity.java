@@ -25,6 +25,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -48,7 +49,7 @@ public class DetailActivity extends AppCompatActivity {
     static RatingBar ratingBar;
     private static Foods object;
     private static Foods cart;
-    public   int num=1;
+    public  static int num=1;
     boolean flag=true;
     CoordinatorLayout coordinatorLayout;
     @Override
@@ -108,20 +109,27 @@ public class DetailActivity extends AppCompatActivity {
            number_item.setText(y+"");
            num=y;
            if(object!=null){
-               price_item_detals.setText((num * object.getPrice() )+ "$");
+               price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f",num * object.getPrice()));
+
+
+           }else if (cart!=null) {
+               price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f",num * cart.getPrice()));
 
            }
         });
         minus_btn.setOnClickListener(v->{
             String x=number_item.getText().toString();
             int y=Integer.parseInt(x);
-            if(y>1){
+            if(y>0){
                 --y;
                 number_item.setText(y+"");
                 num=y;
                 if(object!=null){
-                    price_item_detals.setText((num * object.getPrice())+ "$");
+                    price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f",num * object.getPrice()));
 
+
+                } else if (cart!=null) {
+                    price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f",num * cart.getPrice()));
 
                 }
             }
@@ -136,23 +144,24 @@ public class DetailActivity extends AppCompatActivity {
         });
         if(object!=null) {
             image_item.setImageResource(object.getImagepath());
-            price_item.setText("$" + object.getPrice());
+            price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f", object.getPrice()));
             title_item.setText(object.getTitle());
             details_item.setText(object.getDescription());
             text_rating.setText(object.getStar() + " Rating");
             ratingBar.setRating((float) object.getStar());
-            price_item_detals.setText(object.getNumberInCart()* object.getPrice() + "$");
+            price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f", object.getNumberInCart()* object.getPrice()));
+            number_item.setText(object.getNumberInCart()+"");
+
         } else if (cart!=null) {
             image_item.setImageResource(cart.getImagepath());
-            price_item.setText("$" + cart.getPrice());
+            price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f", cart.getPrice()));
             title_item.setText(cart.getTitle());
             details_item.setText(cart.getDescription());
             text_rating.setText(cart.getStar() + " Rating");
             ratingBar.setRating((float)cart.getStar());
-            price_item_detals.setText(cart.getNumberInCart() *cart.getPrice() + "$");
+            price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f", cart.getNumberInCart()* cart.getPrice()));
             number_item.setText(cart.getNumberInCart()+"");
-            Log.d("jjj","num"+num);
-            Log.d("jjj","cart"+cart.getNumberInCart());
+
         }
     }
 
@@ -162,9 +171,8 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void additemcart() {
-
         add_to_card_btn.setOnClickListener(v -> {
-                Foods foodstoadd=null;
+            Foods foodstoadd=null;
                 if(object!=null){
                     foodstoadd=object;
                 } else if (cart!=null) {
@@ -172,31 +180,54 @@ public class DetailActivity extends AppCompatActivity {
                 }
             if(foodstoadd!=null) {
                     num=Integer.parseInt(number_item.getText().toString());
-                    foodstoadd.setNumberInCart(num);// Ensure the object is valid and quantity is greater than zero
-                    boolean flag = Cart.getInstance().additem(getApplicationContext(), foodstoadd);
-                    MainActivity.notification();
-                    setResult(RESULT_OK);
-                    Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Your item added to Cart", Snackbar.LENGTH_SHORT);
+                    boolean flag=true;
+                    foodstoadd.setNumberInCart(num);
+                if(num!=0){
+                    flag = Cart.getInstance().additem(getApplicationContext(), foodstoadd);
+                        MainActivity.notification();
+                        setResult(RESULT_OK);
+
+
+                }
+                    Snackbar  snackbar1 = Snackbar.make(coordinatorLayout, "Your item added to Cart", Snackbar.LENGTH_SHORT);
                     snackbar1.setTextColor(getResources().getColor(R.color.orange));
-                    snackbar1.setBackgroundTint
-                            (getResources().getColor(R.color.blue_grey));
+                    snackbar1.setBackgroundTint(getResources().getColor(R.color.blue_grey));
                     Button snakbar_action = snackbar1.getView().findViewById(com.google.android.material.R.id.snackbar_action);
                     snakbar_action.setTextColor(getResources().getColor(R.color.orange));
                     if (flag == true) {
-                        snackbar1.dismiss();
+                        if(num==0){
+                            Cart.getInstance().deleteitem1(getApplicationContext(),foodstoadd);
+                            snackbar1.setText("Item deleted");
+                            snackbar1.setAction("Undo", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Cart.getInstance().restoreLastRemovedItem();
+                                    MainActivity.notification();
 
-                    } else {
-                        snackbar1.show();
-                    }
-                Foods finalFoodstoadd = foodstoadd;
-                snackbar1.setAction("Undo", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Cart.getInstance().deleteitem(getApplicationContext(), finalFoodstoadd);
-                            MainActivity.notification();
+                                }
+                            });
+                            snackbar1.show();
+
 
                         }
-                    });
+                        else{
+                            snackbar1.dismiss();
+
+                        }
+
+                    } else {
+                        Foods finalFoodstoadd = foodstoadd;
+                        snackbar1.setAction("Undo", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Cart.getInstance().deleteitem(getApplicationContext(), finalFoodstoadd);
+                                MainActivity.notification();
+
+                            }
+                        });
+                        snackbar1.show();
+                    }
+
                 }
 
 

@@ -55,8 +55,8 @@ public class CartAddapter extends RecyclerView.Adapter<CartAddapter.viewholder> 
 
     @Override
     public void onBindViewHolder(@NonNull CartAddapter.viewholder holder, int position) {
-
-        if(arrayList.get(position)!=null){
+        Foods foods=arrayList.get(position);
+        if(foods!=null){
             holder.title_cart.setText(arrayList.get(position).getTitle());
             holder.price_item_cart.setText(String.format(Locale.getDefault(), "$%.2f", arrayList.get(position).getPrice()));
             Glide.with(context).load(arrayList.get(position).getImagepath()).into(holder.pic_cart);
@@ -65,16 +65,14 @@ public class CartAddapter extends RecyclerView.Adapter<CartAddapter.viewholder> 
 
             holder.plus_item_cart.setOnClickListener(v->{
                 flag=true;
-                clickListner1.onclick(v,position,flag,arrayList.get(position));
-                notifyItemChanged(position);
+                clickListner1.onclick(v,position,flag,foods);
                 flag=false;
 
             });
 
             holder.minus_button_cart.setOnClickListener(v->{
                 flag=false;
-                clickListner1.onclick(v,position,flag,arrayList.get(position));
-                notifyItemChanged(position);
+                clickListner1.onclick(v,position,flag,foods);
                 flag=true;
             });
 

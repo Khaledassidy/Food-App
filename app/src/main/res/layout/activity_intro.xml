@@ -37,7 +37,7 @@
         android:id="@+id/name_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="QuickBite Delivery"
+        android:text="@string/foodator"
         android:textColor="@color/purpule"
         android:textSize="60sp"
         android:gravity="center"

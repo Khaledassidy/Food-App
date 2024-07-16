@@ -79,8 +79,19 @@ public class CartActivity extends AppCompatActivity{
         setvariable();
         calculateCart();
         intlist();
+        intl();
     }
 
+    private void intl() {
+        if (Cart.getInstance().isEmpty()) {
+            cart_empty_error.setVisibility(View.VISIBLE);
+            scroll.setVisibility(View.GONE);
+        } else {
+            cart_empty_error.setVisibility(View.GONE);
+            scroll.setVisibility(View.VISIBLE);
+        }
+
+    }
 
 
     private void intlist() {
@@ -98,14 +109,61 @@ public class CartActivity extends AppCompatActivity{
             cartAddapter = new CartAddapter(getApplicationContext(), Cart.getInstance().getcartItem(), new ClickListner() {
                 @Override
                 public void onclick(View view, int position, boolean flag, Foods foods) {
-                    if (flag) { // plus
-                        Cart.getInstance().additem(getApplicationContext(), foods);
-                    } else { // minus
-                        Cart.getInstance().deleteitem(getApplicationContext(), foods);
+                    if (flag) {
+                        if(foods!=null){
+                            // plus
+                            Cart.getInstance().additem1(getApplicationContext(), foods);
+                            cartAddapter.notifyItemChanged(position);
+                        }
+                    } else{
+                        if(foods!=null){
+                            //minus
+                            boolean removeditem=Cart.getInstance().deleteitem(getApplicationContext(), foods);
+                            if(removeditem){
+                                cartAddapter.notifyItemRemoved(position);
+                                cartAddapter.notifyItemRangeChanged(position, cartAddapter.getItemCount());
+                                calculateCart();
+                                cartAddapter.notifyItemRemoved(position);
+                                cartAddapter.notifyItemRangeChanged(position, cartAddapter.getItemCount());
+
+                                //notifyItemRemoved(position): This tells the adapter that an item was removed at a specific position.
+                                //notifyItemRangeChanged(position, itemCount): This tells the adapter that a range of items has changed, starting from position and spanning itemCount items.
+                                //Let's say you have a list of items in a RecyclerView and you remove an item from position 2. You need to:
+                                //
+                                //Notify the adapter that an item was removed at position 2.
+                                //Notify the adapter that all items from position 2 to the end of the list need to be updated because their positions have changed.
+                            }else {
+                                cartAddapter.notifyItemChanged(position);
+                                //notifyItemChanged(position) is a method in the RecyclerView.Adapter class. It tells the adapter that an item at a specific position has changed and that it should update that item in the RecyclerView.
+                                //has changed exple quntity increase
+                                //Imagine you have a shopping cart with three items. Each item has a quantity and a total price. When you press the minus button to decrease the quantity of an item, you need to update the view to reflect the new quantity and price.
+                                //
+                                //Initial State:
+                                //
+                                //Item 1: Quantity = 2, Total Price = $20
+                                //Item 2: Quantity = 1, Total Price = $10
+                                //Item 3: Quantity = 3, Total Price = $30
+                                //User Action:
+                                //
+                                //The user presses the minus button on Item 2.
+                                //Data Update:
+                                //
+                                //The quantity of Item 2 is decreased by 1.
+                                //New state:
+                                //Item 1: Quantity = 2, Total Price = $20
+                                //Item 2: Quantity = 0, Total Price = $0
+                                //Item 3: Quantity = 3, Total Price = $30
+                                //Notify Adapter:
+                                //
+                                //You call notifyItemChanged(position) where position is the index of Item 2.
+                            }
+
+
+                        }
                     }
                     MainActivity.notification();
                     calculateCart();
-                    cartAddapter.notifyItemChanged(position);
+                    intl();
                 }
             });
             rercyle_cart.setAdapter(cartAddapter);
@@ -118,6 +176,8 @@ public class CartActivity extends AppCompatActivity{
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                 intent.putExtra("cart",foods);
                 if (foods != null) {
+                    cartAddapter.notifyItemChanged(position);
+                    cartAddapter.notifyDataSetChanged();
                     activityResultLauncher.launch(intent);
                 }
             }

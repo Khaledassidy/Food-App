@@ -46,6 +46,7 @@ public class Food_list_Adapter extends RecyclerView.Adapter<Food_list_Adapter.vi
         holder.title_text.setText(items.get(position).getTitle());
         holder.price_text.setText(String.format(Locale.getDefault(), "$%.2f", items.get(position).getPrice()));
         Glide.with(context).load(items.get(position).getImagepath()).transform(new CenterCrop(),new RoundedCorners(30)).into(holder.pic);
+
         holder.time.setText(items.get(position).getTimeValue()+"min");
     }
 
