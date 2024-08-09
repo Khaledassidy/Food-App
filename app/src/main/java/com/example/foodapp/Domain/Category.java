@@ -2,10 +2,10 @@ package com.example.foodapp.Domain;
 
 public class Category {
     private int id;
-    private int imagepath;
+    private String imagepath;
     private String name;
 
-    public Category(int id, int imagepath, String name) {
+    public Category(int id, String imagepath, String name) {
         this.id = id;
         this.imagepath = imagepath;
         this.name = name;
@@ -23,11 +23,11 @@ public class Category {
         this.id = id;
     }
 
-    public int getImagepath() {
+    public String getImagepath() {
         return imagepath;
     }
 
-    public void setImagepath(int imagepath) {
+    public void setImagepath(String imagepath) {
         this.imagepath = imagepath;
     }
 

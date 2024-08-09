@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    app:cardCornerRadius="7dp"
+    android:layout_marginTop="6dp"
+    app:cardElevation="1dp"
+    android:layout_marginBottom="6dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/pic_search"
+            android:layout_width="123dp"
+            android:layout_height="96dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/chicagostylehotdog"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/title_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/title"
+            android:textColor="@color/blue_grey"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/pic_search"
+            app:layout_constraintTop_toTopOf="@+id/pic_search" />
+
+        <TextView
+            android:id="@+id/price_item_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textStyle="bold"
+            android:text="$0"
+            android:textSize="15sp"
+            android:textColor="@color/orange"
+            app:layout_constraintStart_toStartOf="@+id/title_search"
+            app:layout_constraintTop_toBottomOf="@+id/title_search" />
+
+        <TextView
+            android:id="@+id/piece"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="piece"
+            android:textSize="10sp"
+            android:textColor="#982E4858"
+            app:layout_constraintStart_toStartOf="@id/price_item_search"
+            app:layout_constraintTop_toBottomOf="@id/price_item_search"/>
+
+
+                <TextView
+                    android:id="@+id/category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name of category"
+                    android:textColor="@color/orange"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/pic_search"
+                    app:layout_constraintStart_toStartOf="@id/piece"
+                    app:layout_constraintTop_toBottomOf="@id/piece"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

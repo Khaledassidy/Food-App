@@ -1,11 +1,14 @@
 package com.example.foodapp.Domain;
 
 public class Location {
-    private int Id;
+    private int id;
     private String loc;
 
     public Location(int id, String loc) {
-        Id = id;
+        id = id;
+        this.loc = loc;
+    }
+    public Location(String loc) {
         this.loc = loc;
     }
     public Location(){
@@ -13,11 +16,11 @@ public class Location {
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        id = id;
     }
 
     public String getLoc() {

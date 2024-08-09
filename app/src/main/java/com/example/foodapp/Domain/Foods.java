@@ -1,6 +1,7 @@
 package com.example.foodapp.Domain;
 
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 
 import java.io.Serializable;
 
@@ -11,32 +12,52 @@ public class Foods  implements Serializable  {
     private int id;
     private int LocationId;
     private double Price;
-    private int Imagepath;
+    private String Imagepath;
     private int PriceId;
     private double Star;
     private int TimeId;
     private  int TimeValue;
     private String Title;
     private int numberInCart;
+    private boolean incart;
 
-    public Foods(int categoryId, String description, boolean bestFood, int id, int locationId, double price, int imagepath, int priceId, double star, int timeId, int timeValue, String title, int numberInCart) {
+    public Foods(int categoryId, String description, String Imagepath, double Price, double Star, int TimeValue, String Title,boolean incart,int numberInCart,int id,int locationId,int priceId,int TimeId,boolean bestFood) {
+        this.CategoryId=categoryId;
+        this.Description = description;
+        this.Imagepath = Imagepath;
+        this.Price = Price;
+        this.Star=Star;
+        this.TimeValue = TimeValue;
+        this.Title = Title;
+        this.incart=incart;
+        this.numberInCart = numberInCart;
+        this.id = id;
+        this.LocationId = locationId;
+        this.PriceId = priceId;
+        this.TimeId = TimeId;
+        this.BestFood=bestFood;
+    }
+    public Foods(int categoryId, String description, String Imagepath, double Price, double Star, int TimeValue, String Title,boolean incart,int numberInCart,int locationId,int priceId,int TimeId,boolean bestfood) {
         CategoryId = categoryId;
         Description = description;
-        BestFood = bestFood;
-        this.id = id;
-        LocationId = locationId;
-        Price = price;
-        Imagepath = imagepath;
-        PriceId = priceId;
-        Star = star;
-        TimeId = timeId;
-        TimeValue = timeValue;
-        Title = title;
+        this.Imagepath = Imagepath;
+        this.Price = Price;
+        this.Star=Star;
+        this.TimeValue = TimeValue;
+        this.Title = Title;
+        this.incart=incart;
         this.numberInCart = numberInCart;
+        LocationId = locationId;
+        PriceId = priceId;
+        this.TimeId = TimeId;
+        this.BestFood=bestfood;
+
+
     }
     public Foods(){
 
     }
+
 
     public int getCategoryId() {
         return CategoryId;
@@ -86,11 +107,11 @@ public class Foods  implements Serializable  {
         Price = price;
     }
 
-    public int getImagepath() {
+    public String getImagepath() {
         return Imagepath;
     }
 
-    public void setImagepath(int imagepath) {
+    public void setImagepath(String imagepath) {
         Imagepath = imagepath;
     }
 
@@ -107,7 +128,7 @@ public class Foods  implements Serializable  {
     }
 
     public void setStar(double star) {
-        Star = star;
+        Star = Star;
     }
 
     public int getTimeId() {
@@ -115,7 +136,7 @@ public class Foods  implements Serializable  {
     }
 
     public void setTimeId(int timeId) {
-        TimeId = timeId;
+        TimeId = TimeId;
     }
 
     public int getTimeValue() {
@@ -123,7 +144,7 @@ public class Foods  implements Serializable  {
     }
 
     public void setTimeValue(int timeValue) {
-        TimeValue = timeValue;
+        TimeValue = TimeValue;
     }
 
     public int getNumberInCart() {
@@ -139,7 +160,15 @@ public class Foods  implements Serializable  {
     }
 
     public void setTitle(String title) {
-        Title = title;
+        Title = Title;
+    }
+
+    public boolean isIncart() {
+        return incart;
+    }
+
+    public void setIncart(boolean incart) {
+        this.incart = incart;
     }
 
     @Override

@@ -1,12 +1,16 @@
 package com.example.foodapp.Domain;
 
 public class Time {
-    private int Id;
+    private int id;
     private String value;
 
 
     public Time(int id, String value) {
-        Id = id;
+        id = id;
+        this.value = value;
+    }
+
+    public Time(String value) {
         this.value = value;
     }
 
@@ -15,11 +19,11 @@ public class Time {
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        id = id;
     }
 
     public String getValue() {

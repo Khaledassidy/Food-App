@@ -35,18 +35,21 @@ public class BaseActivity extends AppCompatActivity {
 
         button_intro();
 
+
     }
 
     private void button_intro() {
         login_intro.setOnClickListener(v->{
             Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
+            finish();
 
         });
 
         signup_intro.setOnClickListener(v->{
             Intent intent=new Intent(getApplicationContext(),SignupActivity.class);
             startActivity(intent);
+            finish();
         });
     }
 }

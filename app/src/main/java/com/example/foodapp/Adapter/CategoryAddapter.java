@@ -1,7 +1,10 @@
 package com.example.foodapp.Adapter;
 
+import static android.app.Activity.RESULT_FIRST_USER;
+
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.foodapp.Activity.List_FoodActivity;
+import com.example.foodapp.Database.DatabaseAcces;
 import com.example.foodapp.Domain.Category;
 import com.example.foodapp.R;
 
@@ -41,6 +45,8 @@ public class CategoryAddapter extends RecyclerView.Adapter<CategoryAddapter.view
     }
 
 
+
+
     @Override
     public void onBindViewHolder(@NonNull CategoryAddapter.viewholder holder, int position) {
         holder.title_text.setText(items.get(position).getName());
@@ -54,6 +60,7 @@ public class CategoryAddapter extends RecyclerView.Adapter<CategoryAddapter.view
                 break;
             }
             case 2:{holder.pic.setBackgroundResource(R.drawable.category3_back);
+
                 break;
             }
             case 3:{holder.pic.setBackgroundResource(R.drawable.category4_back);
@@ -75,7 +82,7 @@ public class CategoryAddapter extends RecyclerView.Adapter<CategoryAddapter.view
 
 
         }
-        Glide.with(context).load(items.get(position).getImagepath()).into(holder.pic);
+        Glide.with(context).load(Uri.parse(items.get(position).getImagepath())).into(holder.pic);
 
 
 
@@ -117,6 +124,8 @@ public class CategoryAddapter extends RecyclerView.Adapter<CategoryAddapter.view
             Intent intent=new Intent(context, List_FoodActivity.class);
             intent.putExtra("name",items.get(getAdapterPosition()).getName());
             intent.putExtra("position",getAdapterPosition());
+            intent.putExtra("Result",RESULT_FIRST_USER);
+
             context.startActivity(intent);
         }
     }

@@ -3,24 +3,40 @@ package com.example.foodapp.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.widget.NestedScrollView;
 
 
+import com.example.foodapp.Database.Database;
+import com.example.foodapp.Database.DatabaseAcces;
 import com.example.foodapp.Domain.Foods;
 import com.example.foodapp.Helper.Cart;
+import com.example.foodapp.Helper.bestfood;
 import com.example.foodapp.R;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -29,36 +45,39 @@ import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
 
-    static ImageView image_item;
-    ImageView back_btn_detals;
+    ImageView image_item;
     ImageView favorite_btn;
     ImageView image_clock;
-    static TextView title_item;
-    static TextView price_item;
-    static TextView text_rating;
+    TextView title_item;
+    TextView price_item;
+    TextView text_rating;
     TextView time_details;
     TextView text_detals;
-    static TextView details_item;
+    TextView details_item;
     TextView quntity_text;
     TextView minus_btn;
-    static TextView number_item;
+    TextView number_item;
     TextView plus_item;
     TextView total_price_txt;
-    static TextView price_item_detals;
+    TextView price_item_detals;
     Button add_to_card_btn;
-    static RatingBar ratingBar;
-    private static Foods object;
-    private static Foods cart;
-    public  static int num=1;
-    boolean flag=true;
+    RatingBar ratingBar;
+    Toolbar toolbar;
     CoordinatorLayout coordinatorLayout;
+    NestedScrollView nestedScrollView;
+    ConstraintLayout quntitiy;
+    int num=0;
+    int foodId;
+    Foods object;
+    String name;
+    String originalToolbarTitle=null;
+    boolean flag=true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         image_item=findViewById(R.id.image_item);
-        back_btn_detals=findViewById(R.id.back_btn_detals);
-        favorite_btn=findViewById(R.id.favorite_btn);
         image_clock=findViewById(R.id.image_clock);
         title_item=findViewById(R.id.title_item);
         price_item=findViewById(R.id.price_item);
@@ -66,7 +85,6 @@ public class DetailActivity extends AppCompatActivity {
         time_details=findViewById(R.id.time_details);
         text_detals=findViewById(R.id.text_detals);
         details_item=findViewById(R.id.details_item);
-        quntity_text=findViewById(R.id.quntity_text);
         minus_btn=findViewById(R.id.minus_btn);
         number_item=findViewById(R.id.number_item);
         plus_item=findViewById(R.id.plus_item);
@@ -75,76 +93,102 @@ public class DetailActivity extends AppCompatActivity {
         add_to_card_btn=findViewById(R.id.add_to_card_btn);
         ratingBar=findViewById(R.id.ratingBar);
         coordinatorLayout=findViewById(R.id.main);
+        quntitiy=findViewById(R.id.contact_quntity);
+        nestedScrollView=findViewById(R.id.scrollView2);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.black));
+        toolbar=findViewById(R.id.colapsing_toolbar);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+        name=getIntent().getStringExtra("name");
+        toolbar.setTitle(name);
+        setSupportActionBar(toolbar);
+        originalToolbarTitle=toolbar.getTitle().toString();
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.x_symbol_svgrepo_com);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getintentextra();
         getvariable();
+        addItemCart();
         getnumIncreament();
-        favorite();
-        additemcart();
-
-    }
 
 
-    private void favorite() {
-        favorite_btn.setOnClickListener(v->{
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            if(flag==true){
-                favorite_btn.setImageResource(R.mipmap.fav);
-                flag=false;
-            } else if (flag==false) {
-                favorite_btn.setImageResource(R.drawable.favorite_white);
+            nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                                if (scrollY==0) {
+                                    //at top
+                                    toolbar.setTitle(null);
+                                }  else if (scrollY>oldScrollY) {
+                                    //scroll down
+                                    toolbar.setTitle(name);
 
-                flag=true;
-
-            }
-        });
-    }
-
-    private void getnumIncreament() {
-        plus_item.setOnClickListener(v->{
-           String x=number_item.getText().toString();
-           int y=Integer.parseInt(x);
-           ++y;
-           number_item.setText(y+"");
-           num=y;
-           if(object!=null){
-               price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f",num * object.getPrice()));
-
-
-           }else if (cart!=null) {
-               price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f",num * cart.getPrice()));
-
-           }
-        });
-        minus_btn.setOnClickListener(v->{
-            String x=number_item.getText().toString();
-            int y=Integer.parseInt(x);
-            if(y>0){
-                --y;
-                number_item.setText(y+"");
-                num=y;
-                if(object!=null){
-                    price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f",num * object.getPrice()));
-
-
-                } else if (cart!=null) {
-                    price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f",num * cart.getPrice()));
+                                }
+                                //if scrolly<oldscroll scroll up
+                                //if scrolly>0 scroll down
+                                //at scroll y=0 at top of screen
 
                 }
-            }
+            });
 
-        });
+        }
     }
 
 
-    private void getvariable() {
-        back_btn_detals.setOnClickListener(v->{
-            finish();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+
+        ImageView imageView = (ImageView) menu.findItem(R.id.likeimage).getActionView();
+        imageView.setOnClickListener(v->{
+            if (flag == false) {
+                imageView.setImageResource(R.drawable.like);
+                flag = true;
+            } else if (flag == true) {
+                imageView.setImageResource(R.drawable.red_heart_svgrepo_com);
+                flag = false;
+            }
         });
-        if(object!=null) {
-            image_item.setImageResource(object.getImagepath());
-            price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f", object.getPrice()));
+
+
+
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.d("onoff",item.getItemId()+"");
+       if(item.getItemId()==android.R.id.home){
+           finish();
+           return true;
+       } else if (item.getItemId()==R.id.share) {
+           return true;
+       }
+
+       return false;
+    }
+
+    public void getintentextra(){
+        foodId=getIntent().getIntExtra("id_food",0);
+        DatabaseAcces.getInstance(this).openRead();
+        object=DatabaseAcces.getInstance(this).FetchFoods(foodId);
+        DatabaseAcces.getInstance(this).close();
+        if(object.isIncart()){
+            add_to_card_btn.setVisibility(View.GONE);
+            quntitiy.setVisibility(View.VISIBLE);
+        }else{
+            add_to_card_btn.setVisibility(View.VISIBLE);
+            quntitiy.setVisibility(View.GONE);
+        }
+
+
+    }
+
+    private void getvariable() {
+        if(object!=null){
+            image_item.setImageURI(Uri.parse(object.getImagepath()));
+            price_item.setText(String.format(Locale.getDefault(), "$%.2f", object.getPrice()));
             title_item.setText(object.getTitle());
             details_item.setText(object.getDescription());
             text_rating.setText(object.getStar() + " Rating");
@@ -152,90 +196,79 @@ public class DetailActivity extends AppCompatActivity {
             price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f", object.getNumberInCart()* object.getPrice()));
             number_item.setText(object.getNumberInCart()+"");
 
-        } else if (cart!=null) {
-            image_item.setImageResource(cart.getImagepath());
-            price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f", cart.getPrice()));
-            title_item.setText(cart.getTitle());
-            details_item.setText(cart.getDescription());
-            text_rating.setText(cart.getStar() + " Rating");
-            ratingBar.setRating((float)cart.getStar());
-            price_item_detals.setText(String.format(Locale.getDefault(), "$%.2f", cart.getNumberInCart()* cart.getPrice()));
-            number_item.setText(cart.getNumberInCart()+"");
-
         }
+
     }
+    private void getnumIncreament() {
 
-    private void getintentextra() {
-        object=(Foods) getIntent().getSerializableExtra("object");
-        cart=(Foods) getIntent().getSerializableExtra("cart");
-    }
+        plus_item.setOnClickListener(v->{
+            num=object.getNumberInCart();
+            ++num;
+            object.setNumberInCart(num);
+            object.setIncart(true);
+            if(num==1){
+                minus_btn.setText("");
+                minus_btn.setBackground(getDrawable(R.drawable.delete_2_svgrepo_com));
+            }else{
+                minus_btn.setText("━");
+                minus_btn.setBackground(null);
+                DatabaseAcces.getInstance(this).openWrite();
+                DatabaseAcces.getInstance(getApplicationContext()).UpdateCart(object);
+                DatabaseAcces.getInstance(this).close();
+            }
 
-    public void additemcart() {
-        add_to_card_btn.setOnClickListener(v -> {
-            Foods foodstoadd=null;
-                if(object!=null){
-                    foodstoadd=object;
-                } else if (cart!=null) {
-                    foodstoadd=cart;
-                }
-            if(foodstoadd!=null) {
-                    num=Integer.parseInt(number_item.getText().toString());
-                    boolean flag=true;
-                    foodstoadd.setNumberInCart(num);
-                if(num!=0){
-                    flag = Cart.getInstance().additem(getApplicationContext(), foodstoadd);
-                        MainActivity.notification();
-                        setResult(RESULT_OK);
+            number_item.setText(String.valueOf(num));
 
-
-                }
-                    Snackbar  snackbar1 = Snackbar.make(coordinatorLayout, "Your item added to Cart", Snackbar.LENGTH_SHORT);
-                    snackbar1.setTextColor(getResources().getColor(R.color.orange));
-                    snackbar1.setBackgroundTint(getResources().getColor(R.color.blue_grey));
-                    Button snakbar_action = snackbar1.getView().findViewById(com.google.android.material.R.id.snackbar_action);
-                    snakbar_action.setTextColor(getResources().getColor(R.color.orange));
-                    if (flag == true) {
-                        if(num==0){
-                            Cart.getInstance().deleteitem1(getApplicationContext(),foodstoadd);
-                            snackbar1.setText("Item deleted");
-                            snackbar1.setAction("Undo", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Cart.getInstance().restoreLastRemovedItem();
-                                    MainActivity.notification();
-
-                                }
-                            });
-                            snackbar1.show();
-
-
-                        }
-                        else{
-                            snackbar1.dismiss();
-
-                        }
-
-                    } else {
-                        Foods finalFoodstoadd = foodstoadd;
-                        snackbar1.setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Cart.getInstance().deleteitem(getApplicationContext(), finalFoodstoadd);
-                                MainActivity.notification();
-
-                            }
-                        });
-                        snackbar1.show();
-                    }
-
-                }
-
-
-
+            getvariable();
 
         });
 
+        minus_btn.setOnClickListener(v->{
+            minus_btn.setText("━");
+            minus_btn.setBackground(null);
+            num=object.getNumberInCart();
+            --num;
+            object.setNumberInCart(num);
+            object.setIncart(true);
+            DatabaseAcces.getInstance(this).openWrite();
+            if(num==1){
+                minus_btn.setText("");
+                minus_btn.setBackground(getDrawable(R.drawable.delete_2_svgrepo_com));
+            }
+            else if(num==0){
+                minus_btn.setText("━");
+                minus_btn.setBackground(null);
+                object.setIncart(false);
+                DatabaseAcces.getInstance(this).DeleteCart(object);
+                quntitiy.setVisibility(View.GONE);
+                add_to_card_btn.setVisibility(View.VISIBLE);
+            }else{
+                minus_btn.setText("━");
+                minus_btn.setBackground(null);
+                DatabaseAcces.getInstance(getApplicationContext()).UpdateCart(object);
+            }
+            DatabaseAcces.getInstance(this).close();
+            number_item.setText(String.valueOf(num));
+            getvariable();
 
+        });
+
+    }
+
+    public void addItemCart(){
+        add_to_card_btn.setOnClickListener(v->{
+            add_to_card_btn.setVisibility(View.GONE);
+            object.setNumberInCart(1);
+            minus_btn.setText("");
+            minus_btn.setBackground(getDrawable(R.drawable.delete_2_svgrepo_com));
+            object.setIncart(true);
+            DatabaseAcces.getInstance(this).openWrite();
+            DatabaseAcces.getInstance(this).InsertCart(object);
+            DatabaseAcces.getInstance(this).close();
+            getvariable();
+            quntitiy.setVisibility(View.VISIBLE);
+
+        });
     }
 
 

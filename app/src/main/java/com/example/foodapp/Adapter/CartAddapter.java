@@ -39,6 +39,11 @@ public class CartAddapter extends RecyclerView.Adapter<CartAddapter.viewholder> 
         this.clickListner1=clickListner;
     }
 
+    public void Delete(Foods foods){
+        arrayList.remove(foods);
+        notifyDataSetChanged();
+    }
+
 
     public void setclick(Clickevent clickListner){
         this.clickListner=clickListner;
@@ -63,7 +68,23 @@ public class CartAddapter extends RecyclerView.Adapter<CartAddapter.viewholder> 
             holder.totalt_price_cart.setText(String.format(Locale.getDefault(), "$%.2f",arrayList.get(position).getNumberInCart()*arrayList.get(position).getPrice()));
             holder.quntity_item_cart.setText(String.valueOf(arrayList.get(position).getNumberInCart()));
 
+            if(arrayList.get(position).getNumberInCart()==1){
+                holder.minus_button_cart.setText("");
+                holder.minus_button_cart.setBackgroundResource(R.drawable.delete_2_svgrepo_com);
+            }else{
+                holder.minus_button_cart.setBackgroundResource(R.drawable.edittextbackground);
+                holder.minus_button_cart.setText("-");
+
+            }
             holder.plus_item_cart.setOnClickListener(v->{
+                if(arrayList.get(position).getNumberInCart()==1){
+                    holder.minus_button_cart.setText("");
+                    holder.minus_button_cart.setBackgroundResource(R.drawable.delete_2_svgrepo_com);
+                }else{
+                    holder.minus_button_cart.setBackgroundResource(R.drawable.edittextbackground);
+                    holder.minus_button_cart.setText("-");
+
+                }
                 flag=true;
                 clickListner1.onclick(v,position,flag,foods);
                 flag=false;
@@ -71,6 +92,14 @@ public class CartAddapter extends RecyclerView.Adapter<CartAddapter.viewholder> 
             });
 
             holder.minus_button_cart.setOnClickListener(v->{
+                if(arrayList.get(position).getNumberInCart()==1){
+                    holder.minus_button_cart.setText("");
+                    holder.minus_button_cart.setBackgroundResource(R.drawable.delete_2_svgrepo_com);
+                }else{
+                    holder.minus_button_cart.setBackgroundResource(R.drawable.edittextbackground);
+                    holder.minus_button_cart.setText("-");
+
+                }
                 flag=false;
                 clickListner1.onclick(v,position,flag,foods);
                 flag=true;
@@ -112,7 +141,7 @@ public class CartAddapter extends RecyclerView.Adapter<CartAddapter.viewholder> 
         @Override
         public void onClick(View v) {
            if(clickListner!=null){
-               clickListner.onclick(arrayList.get(getAdapterPosition()),getAdapterPosition());
+               clickListner.onclick(arrayList.get(getAdapterPosition()).getId(),arrayList.get(getAdapterPosition()),getAdapterPosition());
            }
 
         }

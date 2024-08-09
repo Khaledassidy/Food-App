@@ -3,6 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#F75564</color>
+    <color name="PRIMARYCOLOR">#FF9800</color>
+    <color name="DARKPRIMARYCOLOR">#F57C00</color>
+    <color name="ACCENTCOLOR">#9E9E9E</color>
     <color name="blue_grey">#2E4858</color>
     <color name="orange">#ff5e00</color>
     <color name="purpule">#3d33a8</color>

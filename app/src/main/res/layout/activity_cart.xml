@@ -9,17 +9,55 @@
     tools:context=".Activity.CartActivity">
 
 
-
-    <TextView
-        android:id="@+id/cart_empty_error"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/container_error"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/red"
-        android:text="Cart is Empty" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.20">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/emptycartbasket"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="40sp"
+            android:textColor="@color/blue_grey"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:text="Ooops!" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#982E4858"
+            android:text="Your shopping cart is empty" />
+
+        <TextView
+            android:id="@+id/start_shopping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="35dp"
+            android:text="Start Shopping"
+            android:textColor="#FFA200"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
 <!--    Using NestedScrollView with setNestedScrollingEnabled(true) for a RecyclerView inside a scrolling container is a good idea in this scenario for several reasons:
 1. Solves the Double Scrolling Issue:
 The primary reason is that it directly addresses the double scrolling problem you were facing. When you nest a regular RecyclerView within a ScrollView, both try to handle scrolling independently, leading to conflicts and a jarring user experience. NestedScrollView is designed to coordinate scrolling between the parent and child, eliminating this issue.
@@ -91,8 +129,8 @@ In summary, using NestedScrollView in this way offers a simple, efficient, and s
 
                 <EditText
                     android:id="@+id/editTextText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/grey_background"
@@ -108,7 +146,7 @@ In summary, using NestedScrollView in this way offers a simple, efficient, and s
                     android:id="@+id/button_copon"
                     style="@android:style/Widget.Button"
                     android:layout_width="145dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/orange_back_button2"
                     android:text="Apply Coupon"
                     android:textColor="@color/white" />

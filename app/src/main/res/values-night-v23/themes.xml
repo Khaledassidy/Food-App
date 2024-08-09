@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Base.Theme.FoodAPP" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/PRIMARYCOLOR</item>
+        <item name="colorPrimaryDark">@color/DARKPRIMARYCOLOR</item>
+        <item name="colorAccent">@color/ACCENTCOLOR</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropdownItem</item>
+    </style>
+</resources>

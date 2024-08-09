@@ -27,6 +27,7 @@
             android:layout_marginTop="48dp"
             app:srcCompat="@drawable/logo1" />
 
+
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="match_parent"
@@ -53,49 +54,71 @@
                 android:textStyle="bold"/>
         </LinearLayout>
 
-             <EditText
-                 android:id="@+id/editText_email"
+             <com.google.android.material.textfield.TextInputLayout
+                 android:id="@+id/textinput_layout_login"
                  android:layout_width="match_parent"
-                 android:layout_height="50dp"
-                 android:background="@drawable/edittextbackground"
-                 android:ems="10"
-                 android:inputType="text"
+                 android:layout_height="wrap_content"
                  android:layout_marginTop="32dp"
                  android:layout_marginStart="32dp"
                  android:layout_marginEnd="32dp"
+                 app:boxStrokeWidth="0dp"
+                 app:boxStrokeWidthFocused="0dp"
+                 app:errorTextColor="@color/red"
+                 app:errorEnabled="true"
+                 app:hintTextColor="@color/blue_grey"
                  android:textColor="@color/blue_grey"
-                 android:textAlignment="center"
-                 android:textColorHint="@color/blue_grey"
-                 android:textSize="16sp"
-                 android:hint="@string/email_adress"/>
-             <EditText
-                 android:id="@+id/editTextText_password"
-                 android:layout_width="match_parent"
-                 android:layout_height="50dp"
-                 android:background="@drawable/edittextbackground"
-                 android:ems="10"
-                 android:inputType="textPassword"
-                 android:layout_marginTop="16dp"
-                 android:textColor="@color/blue_grey"
-                 android:layout_marginStart="32dp"
-                 android:layout_marginEnd="32dp"
-                 android:textAlignment="center"
-                 android:textColorHint="@color/blue_grey"
-                 android:textSize="16sp"
-                 android:hint="@string/password"/>
-             <TextView
-                 android:id="@+id/error"
+                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                 android:textColorHint="@color/blue_grey">
+                 <com.google.android.material.textfield.TextInputEditText
+                     android:id="@+id/textinput_email_login"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:inputType="text"
+                     android:textSize="16sp"
+                     android:background="@drawable/edittextbackground"
+                     android:textColor="@color/blue_grey"
+                     android:hint="@string/email_adress"/>
+             </com.google.android.material.textfield.TextInputLayout>
+<!-- app:endIconMode="password_toggle" hay bt5lek t7ot icon bel end taba3 l textinputlayout metl icon jehzen ta3t l password eno show 2aw la2 clear text w ela click lisner iza t8ayar l icon esma on  textinput_layout_login_email.addOnEndIconChangedListener();-->
+             <com.google.android.material.textfield.TextInputLayout
+                 android:id="@+id/textinput_layout_login1"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
-                 android:text="erro"
-                 android:layout_marginTop="5dp"
+                 android:layout_marginTop="10dp"
                  android:layout_marginStart="32dp"
                  android:layout_marginEnd="32dp"
-                 android:textAlignment="center"
-                 android:visibility="invisible"
-                 android:textColor="@color/red">
+                 app:boxStrokeWidth="0dp"
+                 app:boxStrokeWidthFocused="0dp"
+                 app:errorTextColor="@color/red"
+                 app:hintTextColor="@color/blue_grey"
+                 app:errorEnabled="true"
+                 android:textColor="@color/blue_grey"
+                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                 android:textColorHint="@color/blue_grey">
+                 <com.google.android.material.textfield.TextInputEditText
+                     android:id="@+id/textinput_pass_login"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:inputType="textPassword"
+                     android:textSize="16sp"
+                     android:background="@drawable/edittextbackground"
+                     android:textColor="@color/blue_grey"
+                     android:hint="@string/password"/>
+             </com.google.android.material.textfield.TextInputLayout>
 
-             </TextView>
+<!--             <TextView-->
+<!--                 android:id="@+id/error"-->
+<!--                 android:layout_width="match_parent"-->
+<!--                 android:layout_height="wrap_content"-->
+<!--                 android:text="erro"-->
+<!--                 android:layout_marginTop="5dp"-->
+<!--                 android:layout_marginStart="32dp"-->
+<!--                 android:layout_marginEnd="32dp"-->
+<!--                 android:textAlignment="center"-->
+<!--                 android:visibility="invisible"-->
+<!--                 android:textColor="@color/red">-->
+
+<!--             </TextView>-->
 
 
              <TextView
@@ -105,7 +128,9 @@
                  android:text="@string/forget_password"
                  android:textColor="@color/black"
                  android:textSize="16sp"
-                 android:layout_marginTop="15dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginEnd="32dp"
+                 android:layout_marginStart="32dp"
                  android:textAlignment="center"/>
 
              <androidx.appcompat.widget.AppCompatButton

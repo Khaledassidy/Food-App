@@ -18,11 +18,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.foodapp.R;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class SignupActivity extends AppCompatActivity {
     ImageView image_intro_login;
     TextView text_food,text_app,are_you_member,text_login_in_signup,error;
-    EditText editText_email,editTextText_password;
+    TextInputEditText editText_email,editTextText_password;
+    TextInputLayout textinput_layout_signup_email,textinput_layout_signuppass;
     AppCompatButton signup_button;
 
     @Override
@@ -35,14 +38,15 @@ public class SignupActivity extends AppCompatActivity {
         text_app=findViewById(R.id.text_app);
         are_you_member=findViewById(R.id.are_you_member);
         text_login_in_signup=findViewById(R.id.text_login_in_signup);
-        editText_email=findViewById(R.id.editText_email);
-        editTextText_password=findViewById(R.id.editTextText_password);
+        editText_email=findViewById(R.id.textinput_email_signup);
+        editTextText_password=findViewById(R.id.textinput_pass_signup);
+        textinput_layout_signup_email=findViewById(R.id.textinput_layout_signup);
+        textinput_layout_signuppass=findViewById(R.id.textinput_layout_signup1);
         signup_button=findViewById(R.id.signup_button);
-        error=findViewById(R.id.error);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setvariable();
         text_login_in_signup.setOnClickListener(v->{
-            Intent intent=new Intent(getApplicationContext(), SignupActivity.class);
+            Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         });
 
@@ -76,17 +80,22 @@ public class SignupActivity extends AppCompatActivity {
                 //Deleting characters: If the user deletes a character, before would be 1 (or more, depending on how many characters are deleted).
                 //Replacing text: If the user selects a portion of text and types over it, before would represent the number of characters that were replaced. E
                 if(s.length()==0){
-                    error.setVisibility(View.INVISIBLE);
+                    //error.setVisibility(View.INVISIBLE);
+                    textinput_layout_signuppass.setError(null);
+
                 }
-                else {
+                else{
                     if(s.length()<8){
-                        error.setText("your password must be 8 character");
-                        error.setVisibility(View.VISIBLE);
+                        textinput_layout_signuppass.setError("your password must be 8 character");
+//                      error.setText("your password must be 8 character");
+//                      error.setVisibility(View.VISIBLE);
                     } else if (s.length()>8) {
-                        error.setVisibility(View.INVISIBLE);
+//                      error.setVisibility(View.INVISIBLE);
+                        textinput_layout_signuppass.setError(null);
 
                     } else if (s.length()==8) {
-                        error.setVisibility(View.INVISIBLE);
+//                      error.setVisibility(View.INVISIBLE);
+                        textinput_layout_signuppass.setError(null);
 
                     }
                 }
@@ -94,6 +103,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
             }
+
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -109,36 +119,107 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        editText_email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length()==0){
+                    //error.setVisibility(View.INVISIBLE);
+                    textinput_layout_signup_email.setError(null);
+
+                }else{
+                    if(!s.toString().contains("@hotmail.com")){
+                        textinput_layout_signup_email.setError("Email must be contain @hotmail.com");
+                    } else{
+                        textinput_layout_signup_email.setError(null);
+
+                    }
+
+                }
+
+
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+
+            }
+        });
+
+
         signup_button.setOnClickListener(v->{
             Intent intent=new Intent(getApplicationContext(), MainActivity.class);
             String password=editTextText_password.getText().toString();
             String email=editText_email.getText().toString();
             if(email.isEmpty() || password.isEmpty()) {
-                error.setText("please write the email and password");
-                error.setVisibility(View.VISIBLE);
-            } else if (email.isEmpty()==false || password.isEmpty()==false) {
+//              error.setText("please write the email and password");
+//              error.setVisibility(View.VISIBLE);
+                if (email.isEmpty()) {
+                    editText_email.setError("This field is required");
+
+                }  if (password.isEmpty()) {
+                    textinput_layout_signuppass.setError("This field is required");
+
+                }
+
+
+            }  else {
+                editText_email.setError(null);
+                textinput_layout_signuppass.setError(null);
+
+            }
+            if(!password.isEmpty() && !email.isEmpty() && editText_email.getText().toString().contains("@hotmail.com" ) ){
+                textinput_layout_signup_email.setError(null);
 
                 if (password.length() < 8) {
-                    error.setText("your password must be 8 character");
-                    error.setVisibility(View.VISIBLE);
+                    textinput_layout_signuppass.setError("your password must be 8 character");
+//                  error.setText("your password must be 8 character");
+//                  error.setVisibility(View.VISIBLE);
                 } else if (password.length() > 8) {
-                    error.setVisibility(View.INVISIBLE);
+//                  error.setVisibility(View.INVISIBLE);
+                    textinput_layout_signuppass.setError(null);
                     startActivity(intent);
                     finish();
                 } else if (password.length() == 8) {
-                    error.setVisibility(View.INVISIBLE);
+//                  error.setVisibility(View.INVISIBLE);
+                    textinput_layout_signuppass.setError(null);
                     startActivity(intent);
                     finish();
 
 
-
                 }
+            }else if (!email.isEmpty()  && !editText_email.getText().toString().contains("@hotmail.com" )){
+                textinput_layout_signup_email.setError("Email must be contain @hotmail.com");
+
             }
+
 
 
         });
 
-
+//        textinput_layout_login_email.addOnEndIconChangedListener(new TextInputLayout.OnEndIconChangedListener() {
+//            @Override
+//            public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
+//                if(previousIcon==textInputLayout.END_ICON_PASSWORD_TOGGLE){
+//                    boolean flag=textInputLayout.isEndIconVisible();
+//                    if(flag){
+//                        Toast.makeText(LoginActivity.this, "password visible", Toast.LENGTH_SHORT).show();
+//                    }
+//                    else{
+//                        Toast.makeText(LoginActivity.this, "password not visible", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                }
+//            }
+//        });
+//
 
     }
 }

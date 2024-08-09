@@ -32,36 +32,15 @@ public class Cart {
         return instance;
     }
 
-    public  boolean  additem(Context context,Foods foods){
-        boolean itemexist=false;
-        if(foods!=null){
-            for (Foods existingitem:arrayList){
-                if(existingitem.getId()==foods.getId()){
-                    int newQuantity = DetailActivity.num;
-                    existingitem.setNumberInCart(newQuantity);
-                    Bundle bundle=new Bundle();
-                    itemexist = true;
-                    toast(context,newQuantity);
-                    break;
-                }
-            }
-            if(!itemexist){
-                foods.setNumberInCart(foods.getNumberInCart());
-                arrayList.add(foods);
-
-            }
-
-        }
-        return itemexist;
 
 
-    }
+
     public  boolean  additem1(Context context,Foods foods){
         boolean itemexist=false;
         if(foods!=null){
             for (Foods existingitem:arrayList){
                 if(existingitem.getId()==foods.getId()){
-                    int newQuantity = existingitem.getNumberInCart()+1;
+                    int newQuantity= foods.getNumberInCart();
                     existingitem.setNumberInCart(newQuantity);
                     itemexist = true;
                     toast(context,newQuantity);
@@ -69,7 +48,7 @@ public class Cart {
                 }
             }
             if(!itemexist){
-                foods.setNumberInCart(foods.getNumberInCart());
+                foods.setNumberInCart(1);
                 arrayList.add(foods);
 
             }
@@ -85,12 +64,12 @@ public class Cart {
         if (foods != null) {
             for (Foods existingItem : arrayList) {
                 if (existingItem.getId() == foods.getId()) {
-                    int newQuantity = existingItem.getNumberInCart() - 1;
+                    int newQuantity = foods.getNumberInCart();
                     existingItem.setNumberInCart(newQuantity);
-                    if (foods.getNumberInCart() == 0) {
+                    if (existingItem.getNumberInCart() == 0) {
                         lastRemovedItem=existingItem;
                         lastRemovedItemQuantity=existingItem.getNumberInCart();
-                        arrayList.remove(foods);
+                        arrayList.remove(existingItem);
                         itemdelete=true;
                         foods.setNumberInCart(1);
                     }
@@ -104,28 +83,9 @@ public class Cart {
         return itemdelete;
 
     }
-    public boolean deleteitem1(Context context,Foods foods){
-        boolean itemdelete=false;
-        if (foods != null) {
-            for (Foods existingItem : arrayList) {
-                if (existingItem.getId() == foods.getId()) {
-                    int newQuantity = existingItem.getNumberInCart();
-                    existingItem.setNumberInCart(newQuantity);
-                    lastRemovedItem=existingItem;
-                    lastRemovedItemQuantity=existingItem.getNumberInCart();
-                      arrayList.remove(existingItem);
-                        itemdelete=true;
-                    }
-                    break;
-                }
-            }
-        return itemdelete;
 
 
 
-
-
-    }
     public void restoreLastRemovedItem() {
         if (lastRemovedItem != null) {
             lastRemovedItem.setNumberInCart(lastRemovedItemQuantity);
