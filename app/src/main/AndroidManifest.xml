@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,9 +17,11 @@
         tools:targetApi="31">
         <activity
             android:name=".Activity.SearchActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".Activity.AdminPannel"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".Activity.CartActivity"
