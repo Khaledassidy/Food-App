@@ -1069,16 +1069,20 @@ public class DatabaseAcces {
 
     //insert into food table mn 5elel l content provider
     public long insertprovider(ContentValues contentValues){
-        return database.insert(Database.FOODS_TABLE_NAME,null,contentValues);
+       return database.insert(Database.FOODS_TABLE_NAME,null,contentValues);
+
+
     }
     //update into food table mn 5elel l content provider
     public int updateprovider(ContentValues contentValues,String s,String[] strings){
         return database.update(Database.FOODS_TABLE_NAME,contentValues,s,strings);
 
+
     }
 
     public int Deleteprovider(String whereClause,String[] whereValues){
         return database.delete(Database.FOODS_TABLE_NAME,whereClause,whereValues);
+
     }
 
     public Cursor getCursorForAllFood(){
@@ -1086,8 +1090,8 @@ public class DatabaseAcces {
         return cursor;
     }
 
-    public Cursor getCursorForSpecificPlace(String place){
-        Cursor cursor=database.query(Database.FOODS_TABLE_NAME,new String[]{Database.FOODS_TB_CategoryId,Database.FOODS_TB_Description,Database.FOODS_TB_Imagepath,Database.FOODS_TB_Price,Database.FOODS_TB_Star,Database.FOODS_TB_TimeValue,Database.FOODS_TB_Title,Database.FOODS_TB_incart,Database.FOODS_TB_numberInCart,Database.FOODS_TB_id,Database.FOODS_TB_LocationId,Database.FOODS_TB_PriceId,Database.FOODS_TB_TimeId,Database.FOODS_TB_BESTFOOD},Database.FOODS_TABLE_NAME+"LIKE %"+place+"%",null,null,null,null);
+    public Cursor getCursorForSpecificPlace(int id_category){
+        Cursor cursor=database.query(Database.FOODS_TABLE_NAME,new String[]{Database.FOODS_TB_CategoryId,Database.FOODS_TB_Description,Database.FOODS_TB_Imagepath,Database.FOODS_TB_Price,Database.FOODS_TB_Star,Database.FOODS_TB_TimeValue,Database.FOODS_TB_Title,Database.FOODS_TB_incart,Database.FOODS_TB_numberInCart,Database.FOODS_TB_id,Database.FOODS_TB_LocationId,Database.FOODS_TB_PriceId,Database.FOODS_TB_TimeId,Database.FOODS_TB_BESTFOOD},Database.FOODS_TB_CategoryId+" =?",new String[]{String.valueOf(id_category)},null,null,null);
         return cursor;
     }
 

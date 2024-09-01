@@ -84,12 +84,16 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.foodapp.Database.Database;
 import com.example.foodapp.Database.DatabaseAcces;
+
 
 public class DeliveryAppProvider extends ContentProvider {
 
@@ -130,17 +134,19 @@ public class DeliveryAppProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+        databaseAcces.openRead();
         Cursor cursor=null;
         switch (MATCHER.match(uri)){
             case FOOD_LIST:cursor=databaseAcces.getCursorForAllFood();
             break;
-            case FOOD_FROM_SPECIFIC_PLACE:cursor=databaseAcces.getCursorForSpecificPlace(projection[0]);
+            case FOOD_FROM_SPECIFIC_PLACE:cursor=databaseAcces.getCursorForSpecificPlace(Integer.valueOf(selectionArgs[0]));
             break;
             case FOOD_COUNT:cursor=databaseAcces.getCursorCount();
             break;
             default:cursor=null;
             break;
         }
+
         return cursor;
     }
 
@@ -158,12 +164,12 @@ public class DeliveryAppProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+        databaseAcces.openWrite();
         Uri returnuri=null;
         switch (MATCHER.match(uri)){
             case FOOD_LIST:returnuri=insertfood(uri,values);
             break;
-            default:new UnsupportedOperationException("insert operation not supported");
-            break;
+            default:throw new UnsupportedOperationException("insert operation not supported");
         }
         return returnuri;
     }
@@ -174,8 +180,8 @@ public class DeliveryAppProvider extends ContentProvider {
         switch (MATCHER.match(uri)){
             case FOOD_LIST:deletecount=deletefood(selection,selectionArgs);
             break;
-            default:new UnsupportedOperationException("insert operation not supported");
-            break;
+            default:throw new UnsupportedOperationException("insert operation not supported");
+
         }
         return deletecount;
     }
@@ -186,8 +192,7 @@ public class DeliveryAppProvider extends ContentProvider {
         switch (MATCHER.match(uri)){
             case FOOD_LIST:updatecount=updatefood(values,selection,selectionArgs);
             break;
-            default:new UnsupportedOperationException("insert operation not supported");
-            break;
+            default:throw new UnsupportedOperationException("insert operation not supported");
 
         }
         return updatecount;

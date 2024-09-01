@@ -43,4 +43,6 @@ dependencies {
     implementation (libs.glide)
     implementation(libs.sqliteassethelper)
     annotationProcessor (libs.compiler)
+    implementation (libs.hikaricp) // HikariCP dependency
+
 }

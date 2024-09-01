@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <permission android:name="com.example.foodapp.READ_FOOD"
+        android:protectionLevel="normal"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,9 +16,13 @@
         android:theme="@style/Theme.FoodAPP"
         tools:targetApi="31">
         <provider
-            android:authorities="com.example.foodapp.Activity.DeliveryAppProvider"
+            android:authorities="com.example.foodapp"
             android:name=".Activity.DeliveryAppProvider"
-            android:exported="false"/>
+            android:exported="true"
+            android:permission="com.example.foodapp.READ_FOOD"
+            android:readPermission="com.example.foodapp.READ_FOOD"
+            android:multiprocess="true"
+            android:enabled="true"/>
         <activity
             android:name=".Activity.SplashScreenActivity"
             android:configChanges="orientation|screenSize"
